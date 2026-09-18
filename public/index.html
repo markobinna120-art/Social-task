@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Social Task</title>
+
+  <meta
+    name="description"
+    content="Social Task - Earn money by completing social media tasks."
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+       AUTHENTICATION
+  ====================================================== -->
+
+  <section id="authScreen" class="auth-screen">
+
+    <div class="auth-card">
+
+      <div class="brand">
+        <div class="brand-logo">ST</div>
+
+        <div>
+          <h1>Social Task</h1>
+          <p>Complete tasks. Earn rewards.</p>
+        </div>
+      </div>
+
+      <!-- LOGIN / SIGNUP TABS -->
+
+      <div class="auth-tabs">
+        <button
+          id="loginTab"
+          class="auth-tab active"
+          type="button"
+        >
+          Sign In
+        </button>
+
+        <button
+          id="signupTab"
+          class="auth-tab"
+          type="button"
+        >
+          Sign Up
+        </button>
+      </div>
+
+
+      <!-- LOGIN -->
+
+      <form id="loginForm" class="auth-form">
+
+        <label>Email</label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="Enter your email"
+          required
+        >
+
+        <label>Password</label>
+
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Enter your password"
+          required
+        >
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Sign In
+        </button>
+
+      </form>
+
+
+      <!-- SIGNUP -->
+
+      <form
+        id="signupForm"
+        class="auth-form hidden"
+      >
+
+        <label>Email</label>
+
+        <input
+          id="signupEmail"
+          type="email"
+          placeholder="Enter your email"
+          required
+        >
+
+
+        <label>Username</label>
+
+        <input
+          id="signupUsername"
+          type="text"
+          placeholder="Choose a username"
+          required
+        >
+
+
+        <label>Password</label>
+
+        <input
+          id="signupPassword"
+          type="password"
+          placeholder="Minimum 6 characters"
+          minlength="6"
+          required
+        >
+
+
+        <label>Account Type</label>
+
+        <select id="signupRole" required>
+
+          <option value="">
+            Select account type
+          </option>
+
+          <option value="earner">
+            Earner
+          </option>
+
+          <option value="advertiser">
+            Advertiser
+          </option>
+
+        </select>
+
+
+        <div class="otp-row">
+
+          <input
+            id="signupOTP"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="Email OTP"
+            required
+          >
+
+          <button
+            id="sendOTPBtn"
+            type="button"
+            class="secondary-btn"
+          >
+            Send OTP
+          </button>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          Create Account
+        </button>
+
+      </form>
+
+
+      <div
+        id="authMessage"
+        class="message"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       MAIN APPLICATION
+  ====================================================== -->
+
+  <section
+    id="appScreen"
+    class="app-screen hidden"
+  >
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button
+          id="menuButton"
+          class="menu-button"
+          type="button"
+          aria-label="Open menu"
+        >
+          ⋮
+        </button>
+
+        <div class="top-brand">
+          <strong>Social Task</strong>
+        </div>
+
+      </div>
+
+
+      <div class="topbar-right">
+
+        <div class="user-mini">
+
+          <div
+            id="userAvatar"
+            class="avatar"
+          >
+            U
+          </div>
+
+          <div>
+
+            <strong id="topUsername">
+              User
+            </strong>
+
+            <small id="topRole">
+              Earner
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- SIDE MENU -->
+
+    <aside
+      id="sideMenu"
+      class="side-menu"
+    >
+
+      <div class="menu-header">
+
+        <div class="brand-logo small">
+          ST
+        </div>
+
+        <div>
+          <strong>Social Task</strong>
+          <small>Menu</small>
+        </div>
+
+      </div>
+
+
+      <nav>
+
+        <button
+          class="menu-item active"
+          data-page="home"
+          type="button"
+        >
+          <span>⌂</span>
+          Home
+        </button>
+
+
+        <button
+          class="menu-item"
+          data-page="tasks"
+          type="button"
+        >
+          <span>✓</span>
+          Tasks
+        </button>
+
+
+        <button
+          id="postTaskMenu"
+          class="menu-item advertiser-only"
+          data-page="postTask"
+          type="button"
+        >
+          <span>＋</span>
+          Post Task
+        </button>
+
+
+        <button
+          id="adminMenu"
+          class="menu-item hidden"
+          data-page="admin"
+          type="button"
+        >
+          <span>⚙</span>
+          Admin
+        </button>
+
+
+        <button
+          id="logoutButton"
+          class="menu-item logout-item"
+          type="button"
+        >
+          <span>↪</span>
+          Sign Out
+        </button>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- OVERLAY -->
+
+    <div
+      id="menuOverlay"
+      class="menu-overlay"
+    ></div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+      <!-- =================================================
+           HOME PAGE
+      ================================================== -->
+
+      <section
+        id="page-home"
+        class="page active"
+      >
+
+        <div class="welcome">
+
+          <div>
+
+            <span class="eyebrow">
+              Welcome back
+            </span>
+
+            <h2>
+              Hello,
+              <span id="homeUsername">
+                User
+              </span>
+              👋
+            </h2>
+
+            <p>
+              Manage your Social Task activity from here.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- BALANCES -->
+
+        <div class="balance-grid">
+
+          <div class="balance-card">
+
+            <div class="balance-icon">
+              ₦
+            </div>
+
+            <div>
+
+              <span>
+                Available Balance
+              </span>
+
+              <strong id="availableBalance">
+                ₦0
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="balance-card">
+
+            <div class="balance-icon pending">
+              ◷
+            </div>
+
+            <div>
+
+              <span>
+                Pending Balance
+              </span>
+
+              <strong id="pendingBalance">
+                ₦0
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- TASKS -->
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              Marketplace
+            </span>
+
+            <h3>
+              Available Tasks
+            </h3>
+
+          </div>
+
+          <button
+            id="viewAllTasks"
+            class="text-button"
+            type="button"
+          >
+            View All
+          </button>
+
+        </div>
+
+
+        <div
+          id="homeTasks"
+          class="task-grid"
+        ></div>
+
+
+        <div
+          id="homeNoTasks"
+          class="empty-state hidden"
+        >
+          <div class="empty-icon">
+            ✓
+          </div>
+
+          <h3>
+            No tasks available
+          </h3>
+
+          <p>
+            New tasks will appear here when advertisers post them.
+          </p>
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           TASKS PAGE
+      ================================================== -->
+
+      <section
+        id="page-tasks"
+        class="page"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              Marketplace
+            </span>
+
+            <h2>
+              Available Tasks
+            </h2>
+
+            <p>
+              Complete tasks and earn rewards.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="allTasks"
+          class="task-grid"
+        ></div>
+
+
+        <div
+          id="tasksEmpty"
+          class="empty-state hidden"
+        >
+          <div class="empty-icon">
+            ✓
+          </div>
+
+          <h3>
+            No tasks available
+          </h3>
+
+          <p>
+            Check again later for new tasks.
+          </p>
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        <div
+          id="pagination"
+          class="pagination"
+        >
+
+          <button
+            id="previousPage"
+            type="button"
+            class="secondary-btn"
+          >
+            ← Previous
+          </button>
+
+          <span id="pageNumber">
+            Page 1
+          </span>
+
+          <button
+            id="nextPage"
+            type="button"
+            class="secondary-btn"
+          >
+            Next →
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           POST TASK
+      ================================================== -->
+
+      <section
+        id="page-postTask"
+        class="page"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              Advertiser
+            </span>
+
+            <h2>
+              Post a Task
+            </h2>
+
+            <p>
+              Create a task for earners to complete.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- ADVERTISER BALANCE -->
+
+        <div class="advertiser-wallet">
+
+          <div>
+
+            <span>
+              Available Balance
+            </span>
+
+            <strong id="advertiserBalance">
+              ₦0
+            </strong>
+
+          </div>
+
+          <button
+            id="depositButton"
+            type="button"
+            class="primary-btn"
+          >
+            Deposit
+          </button>
+
+        </div>
+
+
+        <!-- CREATE TASK FORM -->
+
+        <div class="form-card">
+
+          <form id="postTaskForm">
+
+
+            <!-- PLATFORM -->
+
+            <div class="form-group">
+
+              <label>
+                Platform
+              </label>
+
+              <select
+                id="taskPlatform"
+                required
+              >
+
+                <option value="">
+                  Select platform
+                </option>
+
+                <option value="Facebook">
+                  Facebook
+                </option>
+
+                <option value="Instagram">
+                  Instagram
+                </option>
+
+                <option value="TikTok">
+                  TikTok
+                </option>
+
+                <option value="X">
+                  X
+                </option>
+
+                <option value="YouTube">
+                  YouTube
+                </option>
+
+                <option value="WhatsApp">
+                  WhatsApp
+                </option>
+
+                <option value="Telegram">
+                  Telegram
+                </option>
+
+                <option value="Snapchat">
+                  Snapchat
+                </option>
+
+                <option value="LinkedIn">
+                  LinkedIn
+                </option>
+
+                <option value="Threads">
+                  Threads
+                </option>
+
+                <option value="Pinterest">
+                  Pinterest
+                </option>
+
+                <option value="Reddit">
+                  Reddit
+                </option>
+
+                <option value="Website">
+                  Website
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <!-- TASK TYPE -->
+
+            <div class="form-group">
+
+              <label>
+                Task Type
+              </label>
+
+              <select
+                id="taskType"
+                required
+              >
+
+                <option value="">
+                  Select task type
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <!-- TITLE -->
+
+            <div class="form-group">
+
+              <label>
+                Task Name
+              </label>
+
+              <input
+                id="taskTitle"
+                type="text"
+                placeholder="Example: Follow our TikTok account"
+                required
+              >
+
+            </div>
+
+
+            <!-- LINK -->
+
+            <div class="form-group">
+
+              <label>
+                Task Link
+              </label>
+
+              <input
+                id="taskLink"
+                type="url"
+                placeholder="https://..."
+                required
+              >
+
+            </div>
+
+
+            <!-- CUSTOM COMMENT -->
+
+            <div
+              id="customCommentGroup"
+              class="form-group hidden"
+            >
+
+              <label>
+                Exact Comment
+              </label>
+
+              <textarea
+                id="customComment"
+                rows="4"
+                placeholder="Enter the exact comment earners should post..."
+              ></textarea>
+
+              <small>
+                Earners will be able to copy this comment.
+              </small>
+
+            </div>
+
+
+            <!-- QUANTITY -->
+
+            <div class="form-group">
+
+              <label>
+                Quantity
+              </label>
+
+              <input
+                id="taskQuantity"
+                type="number"
+                min="1"
+                placeholder="Example: 100"
+                required
+              >
+
+            </div>
+
+
+            <!-- INSTRUCTION -->
+
+            <div class="form-group">
+
+              <label>
+                Instructions
+              </label>
+
+              <textarea
+                id="taskInstruction"
+                rows="4"
+                placeholder="Add any instructions for earners..."
+              ></textarea>
+
+              <small id="videoInstructionHint"></small>
+
+            </div>
+
+
+            <!-- PRICE PREVIEW -->
+
+            <div
+              id="pricePreview"
+              class="price-preview hidden"
+            >
+
+              <div>
+
+                <span>
+                  Price per task
+                </span>
+
+                <strong id="pricePerTask">
+                  ₦0
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>
+                  Quantity
+                </span>
+
+                <strong id="previewQuantity">
+                  0
+                </strong>
+
+              </div>
+
+              <div class="total">
+
+                <span>
+                  Total Cost
+                </span>
+
+                <strong id="totalCost">
+                  ₦0
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="submit"
+              class="primary-btn full"
+            >
+              Post Task
+            </button>
+
+          </form>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           ADMIN PAGE
+      ================================================== -->
+
+      <section
+        id="page-admin"
+        class="page"
+      >
+
+        <div class="page-heading">
+
+          <div>
+
+            <span class="eyebrow">
+              Administration
+            </span>
+
+            <h2>
+              Admin Dashboard
+            </h2>
+
+            <p>
+              Manage users, tasks, deposits and proof.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- ADMIN TABS -->
+
+        <div class="admin-tabs">
+
+          <button
+            class="admin-tab active"
+            data-admin-page="users"
+            type="button"
+          >
+            Users
+          </button>
+
+          <button
+            class="admin-tab"
+            data-admin-page="tasks"
+            type="button"
+          >
+            Tasks
+          </button>
+
+          <button
+            class="admin-tab"
+            data-admin-page="proof"
+            type="button"
+          >
+            Proof
+          </button>
+
+          <button
+            class="admin-tab"
+            data-admin-page="deposits"
+            type="button"
+          >
+            Deposits
+          </button>
+
+        </div>
+
+
+        <!-- USERS -->
+
+        <div
+          id="admin-users"
+          class="admin-section active"
+        >
+
+          <div
+            id="adminUsersTable"
+            class="admin-list"
+          ></div>
+
+        </div>
+
+
+        <!-- TASKS -->
+
+        <div
+          id="admin-tasks"
+          class="admin-section"
+        >
+
+          <div
+            id="adminTasksTable"
+            class="admin-list"
+          ></div>
+
+        </div>
+
+
+        <!-- PROOF -->
+
+        <div
+          id="admin-proof"
+          class="admin-section"
+        >
+
+          <div
+            id="adminProofTable"
+            class="admin-list"
+          ></div>
+
+        </div>
+
+
+        <!-- DEPOSITS -->
+
+        <div
+          id="admin-deposits"
+          class="admin-section"
+        >
+
+          <div
+            id="adminDepositsTable"
+            class="admin-list"
+          ></div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </section>
+
+
+  <!-- =====================================================
+       MODAL
+  ====================================================== -->
+
+  <div
+    id="modalOverlay"
+    class="modal-overlay hidden"
+  >
+
+    <div
+      id="modal"
+      class="modal"
+    >
+
+      <button
+        id="closeModal"
+        class="close-modal"
+        type="button"
+      >
+        ×
+      </button>
+
+      <div id="modalContent"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       TOAST
+  ====================================================== -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+  <script src="app.js"></script>
+
+</body>
+    </html>
